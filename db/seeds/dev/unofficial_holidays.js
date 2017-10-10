@@ -1,5 +1,6 @@
+const holidayData = require('../../../unofficial_holiday');
 
-const mappedData = data.map(el => {
+const mappedData = holidayData.map(el => {
   return Object.assign({}, name: el[0], date: el[1], type: el[2])
 })
 
