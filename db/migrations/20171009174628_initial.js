@@ -4,7 +4,7 @@ exports.up = (knex, Promise) => {
     knex.schema.createTable('dates', (table) => {
       table.increments('id').primary()
       table.string('month')
-      table.integer('day')
+      table.string('day')
       table.timestamps(true, true)
     }),
 
