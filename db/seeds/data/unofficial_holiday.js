@@ -545,11 +545,6 @@ const holidayData = [
     "cause"
   ],
   [
-    "Be Nice to Jersey Week",
-    "July 3 to 9",
-    "cause"
-  ],
-  [
     "World Population Day",
     "July 11",
     "cause"
@@ -782,16 +777,6 @@ const holidayData = [
   [
     "National American Eagle Day",
     "June 20",
-    "environmental"
-  ],
-  [
-    "National Moth Week",
-    "July 22-30",
-    "environmental"
-  ],
-  [
-    "Clean Beaches Week",
-    "July 1-7",
     "environmental"
   ],
   [
@@ -1627,11 +1612,6 @@ const holidayData = [
   [
     "National Men’s Health Month",
     "June",
-    "health"
-  ],
-  [
-    "National Men’s Health Week",
-    "June 12-18",
     "health"
   ],
   [
