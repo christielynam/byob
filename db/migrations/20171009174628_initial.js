@@ -3,8 +3,8 @@ exports.up = (knex, Promise) => {
   return Promise.all([
     knex.schema.createTable('dates', (table) => {
       table.increments('id').primary()
+      table.string('fullDate')
       table.string('month')
-      table.string('day')
       table.timestamps(true, true)
     }),
 
