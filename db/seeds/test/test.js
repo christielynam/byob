@@ -3,7 +3,7 @@ exports.seed = function(knex, Promise) {
     .then(() => knex('types').del())
     .then(() => {
       return Promise.all([
-        knex('types').insert(
+        knex('types').insert([
           {
           id: 1,
           type: 'activity'
@@ -15,7 +15,7 @@ exports.seed = function(knex, Promise) {
           {
             id: 3,
             type: 'food'
-          }, 'id')
+          }], 'id')
         .then(type => {
           console.log(type);
           return knex('holidays').insert([

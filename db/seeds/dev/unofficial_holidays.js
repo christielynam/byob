@@ -24,6 +24,7 @@ const typesArray = [
 ];
 
 const createType = (knex, type) => {
+  console.log(type);
 
     return knex('types').insert({
       type
