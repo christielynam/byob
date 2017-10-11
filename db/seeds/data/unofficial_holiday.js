@@ -180,16 +180,6 @@ const holidayData = [
     "activity"
   ],
   [
-    "National Yo-Yo Day",
-    "June 6",
-    "activity"
-  ],
-  [
-    "National Sewing Machine Day",
-    "June 13",
-    "activity"
-  ],
-  [
     "National Selfie Day",
     "June 21",
     "activity"
@@ -197,11 +187,6 @@ const holidayData = [
   [
     "National Kissing Day",
     "June 24",
-    "activity"
-  ],
-  [
-    "International Day of the Seafarer",
-    "June 25",
     "activity"
   ],
   [
@@ -310,23 +295,8 @@ const holidayData = [
     "activity"
   ],
   [
-    "International Sudoku Day",
-    "September 9",
-    "activity"
-  ],
-  [
     "National Make Your Bed Day",
     "September 11",
-    "activity"
-  ],
-  [
-    "National Coloring Day",
-    "September 14",
-    "activity"
-  ],
-  [
-    "International Dot Day",
-    "September 15",
     "activity"
   ],
   [
@@ -350,23 +320,8 @@ const holidayData = [
     "activity"
   ],
   [
-    "National Checklist Day",
-    "October 30",
-    "activity"
-  ],
-  [
     "Halloween",
     "October 31",
-    "activity"
-  ],
-  [
-    "National Crossword Puzzle Day",
-    "December 21",
-    "activity"
-  ],
-  [
-    "Festivus",
-    "December 23",
     "activity"
   ],
   [
@@ -450,18 +405,8 @@ const holidayData = [
     "career"
   ],
   [
-    "National S.T.E.M. Day",
-    "November 7",
-    "career"
-  ],
-  [
     "National Entrepreneur’s Day",
     "November 15",
-    "career"
-  ],
-  [
-    "International Ninja Day",
-    "December 5",
     "career"
   ],
   [
@@ -485,18 +430,8 @@ const holidayData = [
     "cause"
   ],
   [
-    "National Be Heard Day",
-    "March 7",
-    "cause"
-  ],
-  [
     "International Women’s Day",
     "March 8",
-    "cause"
-  ],
-  [
-    "Red Nose Day",
-    "March 24",
     "cause"
   ],
   [
@@ -540,11 +475,6 @@ const holidayData = [
     "cause"
   ],
   [
-    "International Asteroid Day",
-    "June 30",
-    "cause"
-  ],
-  [
     "World Population Day",
     "July 11",
     "cause"
@@ -552,26 +482,6 @@ const holidayData = [
   [
     "International Youth Day",
     "August 12",
-    "cause"
-  ],
-  [
-    "World Humanitarian Day",
-    "August 19",
-    "cause"
-  ],
-  [
-    "National Senior Citizens Day",
-    "August 21",
-    "cause"
-  ],
-  [
-    "International Day of Charity",
-    "September 5",
-    "cause"
-  ],
-  [
-    "International Literacy Day",
-    "September 8",
     "cause"
   ],
   [
@@ -670,11 +580,6 @@ const holidayData = [
     "drinking"
   ],
   [
-    "National Daiquiri Day",
-    "July 19",
-    "drinking"
-  ],
-  [
     "National Tequila Day",
     "July 24",
     "drinking"
@@ -682,11 +587,6 @@ const holidayData = [
   [
     "National Scotch Day",
     "July 27",
-    "drinking"
-  ],
-  [
-    "International Beer Day",
-    "August 4",
     "drinking"
   ],
   [
@@ -700,11 +600,6 @@ const holidayData = [
     "drinking"
   ],
   [
-    "National Beer Lover’s Day",
-    "September 7",
-    "drinking"
-  ],
-  [
     "National Drink Beer Day",
     "September 28",
     "drinking"
@@ -715,11 +610,6 @@ const holidayData = [
     "drinking"
   ],
   [
-    "International Coffee Day",
-    "October 1",
-    "drinking"
-  ],
-  [
     "National Vodka Day",
     "October 4",
     "drinking"
@@ -727,11 +617,6 @@ const holidayData = [
   [
     "National American Beer Day",
     "October 27",
-    "drinking"
-  ],
-  [
-    "National Lager Day",
-    "December 10",
     "drinking"
   ],
   [
@@ -840,11 +725,6 @@ const holidayData = [
     "family"
   ],
   [
-    "Global Day of Parents",
-    "June 1",
-    "family"
-  ],
-  [
     "Father’s Day",
     "June 18",
     "family"
@@ -852,11 +732,6 @@ const holidayData = [
   [
     "Gorgeous Grandma Day",
     "July 23",
-    "family"
-  ],
-  [
-    "National Cousin’s Day",
-    "July 24",
     "family"
   ],
   [
@@ -872,11 +747,6 @@ const holidayData = [
   [
     "National Son and Daughter Day",
     "August 11",
-    "family"
-  ],
-  [
-    "National Senior Citizens Day",
-    "August 21",
     "family"
   ],
   [
@@ -972,16 +842,6 @@ const holidayData = [
   [
     "National Pizza Day",
     "February 9",
-    "food"
-  ],
-  [
-    "National Plum Pudding Day",
-    "February 12",
-    "food"
-  ],
-  [
-    "National Tortellini Day",
-    "February 13",
     "food"
   ],
   [
@@ -1410,11 +1270,6 @@ const holidayData = [
     "food"
   ],
   [
-    "National Lemon Juice Day",
-    "August 29",
-    "food"
-  ],
-  [
     "National Trail Mix Day",
     "August 31",
     "food"
@@ -1432,11 +1287,6 @@ const holidayData = [
   [
     "National Peanut Day",
     "September 13",
-    "food"
-  ],
-  [
-    "National Linguine Day",
-    "September 15",
     "food"
   ],
   [
@@ -1460,11 +1310,6 @@ const holidayData = [
     "food"
   ],
   [
-    "National Cherries Jubilee Day",
-    "September 24",
-    "food"
-  ],
-  [
     "National Lobster Day",
     "September 25",
     "food"
@@ -1480,16 +1325,6 @@ const holidayData = [
     "food"
   ],
   [
-    "World Vegetarian Day",
-    "October 1",
-    "food"
-  ],
-  [
-    "National Homemade Cookies Day",
-    "October 1",
-    "food"
-  ],
-  [
     "National Taco Day",
     "October 4",
     "food"
@@ -1497,11 +1332,6 @@ const holidayData = [
   [
     "National Noodle Day",
     "October 6",
-    "food"
-  ],
-  [
-    "National Sausage Pizza Day",
-    "October 11",
     "food"
   ],
   [
@@ -1517,16 +1347,6 @@ const holidayData = [
   [
     "National Nut Day",
     "October 22",
-    "food"
-  ],
-  [
-    "National Bologna Day",
-    "October 24",
-    "food"
-  ],
-  [
-    "World Pasta Day",
-    "October 25",
     "food"
   ],
   [
@@ -1610,28 +1430,13 @@ const holidayData = [
     "health"
   ],
   [
-    "National Men’s Health Month",
-    "June",
-    "health"
-  ],
-  [
     "World Blood Donor Day",
     "June 14",
     "health"
   ],
   [
-    "National Hydration Day",
-    "June 23",
-    "health"
-  ],
-  [
     "National Stay Out of the Sun Day",
     "July 3",
-    "health"
-  ],
-  [
-    "World Hepatitis Day",
-    "July 28",
     "health"
   ],
   [
@@ -1647,16 +1452,6 @@ const holidayData = [
   [
     "National Winston Churchill Day",
     "April 9",
-    "historical"
-  ],
-  [
-    "ANZAC Day",
-    "April 25",
-    "historical"
-  ],
-  [
-    "Harvey Milk Day",
-    "May 22",
     "historical"
   ],
   [
@@ -1765,11 +1560,6 @@ const holidayData = [
     "pet"
   ],
   [
-    "National Spoil Your Dog Day",
-    "August 10",
-    "pet"
-  ],
-  [
     "National Black Cat Appreciation Day",
     "August 17",
     "pet"
@@ -1790,11 +1580,6 @@ const holidayData = [
     "pet"
   ],
   [
-    "National Reptile Awareness Day",
-    "October 21",
-    "pet"
-  ],
-  [
     "National Cat Day",
     "October 29",
     "pet"
@@ -1803,11 +1588,6 @@ const holidayData = [
     "National Mutt Day",
     "December 2",
     "pet"
-  ],
-  [
-    "Galentine’s Day",
-    "February 13",
-    "pop-culture"
   ],
   [
     "Star Wars Day",
@@ -1830,28 +1610,8 @@ const holidayData = [
     "pop-culture"
   ],
   [
-    "World Emoji Day",
-    "July 17",
-    "pop-culture"
-  ],
-  [
-    "Spider-Man Day",
-    "August 1",
-    "pop-culture"
-  ],
-  [
-    "Answer The Telephone Like Buddy The Elf Day",
-    "December 18",
-    "pop-culture"
-  ],
-  [
     "Singles Awareness Day",
     "February 15",
-    "relationship"
-  ],
-  [
-    "National Ex Spouse Day",
-    "April 14",
     "relationship"
   ],
   [
@@ -1882,11 +1642,6 @@ const holidayData = [
   [
     "National Boyfriend Day",
     "October 3",
-    "relationship"
-  ],
-  [
-    "National Unfriend Day",
-    "November 17",
     "relationship"
   ],
   [
@@ -1956,7 +1711,7 @@ const holidayData = [
   ],
   [
     "National Video Games Day ",
-    " September 12",
+    "September 12",
     "technology"
   ],
   [

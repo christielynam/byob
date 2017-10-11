@@ -1,20 +1,20 @@
 
 exports.up = (knex, Promise) => {
   return Promise.all([
-    knex.schema.createTable('dates', (table) => {
+    knex.schema.createTable('types', (table) => {
       table.increments('id').primary()
-      table.string('fullDate')
-      table.string('month')
+      table.string('type')
       table.timestamps(true, true)
     }),
 
     knex.schema.createTable('holidays', (table) => {
       table.increments('id').primary()
       table.string('name')
-      table.string('type')
-      table.integer('date_id').unsigned()
-      table.foreign('date_id')
-        .references('dates.id')
+      table.string('fullDate')
+      table.string('month')
+      table.integer('type_id')
+      table.foreign('type_id')
+        .references('types.id')
       table.timestamps(true, true)
     })
   ])
@@ -23,6 +23,6 @@ exports.up = (knex, Promise) => {
 exports.down = (knex, Promise) => {
   return Promise.all([
     knex.schema.dropTable('holidays'),
-    knex.schema.dropTable('dates'),
+    knex.schema.dropTable('types'),
   ])
 };
