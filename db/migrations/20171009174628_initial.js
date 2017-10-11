@@ -14,7 +14,7 @@ exports.up = (knex, Promise) => {
       table.string('month')
       table.integer('type_id')
       table.foreign('type_id')
-        .references('types.id')
+        .references('types.id').onDelete('cascade')
       table.timestamps(true, true)
     })
   ])
