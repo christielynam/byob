@@ -31,11 +31,14 @@ app.get('/api/v1/types', (request, response) => {
 })
 
 app.get('/api/v1/holidays', (request, response) => {
-  let { month } = request.query;
+  let { month, fullDate } = request.query;
 
   const checkParams = () => {
     if (month) {
       return database('holidays').where('month', month).select()
+    }
+    if (fullDate) {
+      return database('holidays').where('fullDate', fullDate.split(' ').join(''))
     } else {
       return database('holidays').select();
     }
