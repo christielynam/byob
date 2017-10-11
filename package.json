@@ -14,5 +14,10 @@
     "express": "^4.16.1",
     "knex": "^0.13.0",
     "pg": "^7.3.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "^3.0.0",
+    "mocha": "^4.0.1"
   }
 }
