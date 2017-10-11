@@ -122,7 +122,41 @@ app.post('/api/v1/holidays', (request, response) => {
     })
 })
 
+app.patch('/api/v1/holidays/:id', (request, response) => {
+  const holidayPatch = request.body;
 
+  const { id } = request.params;
+
+  database('holidays').where('id', id)
+  .update(holidayPatch, '*')
+  .then(results => {
+    if (!results) {
+        response.status(404).json({ error: `Cannot find a holiday with the id of ${id}` })
+    }
+    response.sendStatus(204)
+  })
+  .catch(error => {
+    response.status(500).json({ error })
+  })
+})
+
+app.patch('/api/v1/types/:id', (request, response) => {
+  const typePatch = request.body;
+
+  const { id } = request.params;
+
+  database('types').where('id', id)
+  .update(typePatch, '*')
+  .then(results => {
+    if (!results) {
+        response.status(404).json({ error: `Cannot find a type with the id of ${id}` })
+    }
+    response.sendStatus(204)
+  })
+  .catch(error => {
+    response.status(500).json({ error })
+  })
+})
 
 app.delete('/api/v1/holidays/:id', (request, response) => {
   const { id } = request.params;
