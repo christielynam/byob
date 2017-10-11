@@ -24,9 +24,11 @@ const typesArray = [
 ];
 
 const createType = (knex, type) => {
+  console.log(type);
 
     return knex('types').insert({
-      type
+      // id: type.id,
+      type: type
     }, '*')
     .then(result => {
       let holidayPromises = [];
@@ -39,6 +41,7 @@ const createType = (knex, type) => {
 
         holidayPromises.push(
           createHoliday(knex, {
+            id: holiday.id,
             name: holiday.name,
             fullDate: holiday.date,
             month: holiday.date.split(' ')[0],
