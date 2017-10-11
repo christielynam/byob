@@ -123,6 +123,40 @@ app.post('/api/v1/holidays', (request, response) => {
 })
 
 
+
+app.delete('/api/v1/holidays/:id', (request, response) => {
+  const { id } = request.params;
+
+  database('holidays').where({ id }).del()
+  .then(holiday => {
+    if (holiday) {
+      response.sendStatus(204)
+    } else {
+      response.status(422).json({ error: 'Not Found' })
+    }
+  })
+  .catch(error => {
+    response.status(500).json({ error })
+  })
+})
+
+app.delete('/api/v1/types/:id', (request, response) => {
+  const { id } = request.params;
+
+  database('types').where({ id }).del()
+  .then(type => {
+    if (type) {
+      response.sendStatus(204)
+    } else {
+      response.status(422).json({ error: 'Not Found' })
+    }
+  })
+  .catch(error => {
+    response.status(500).json({ error })
+  })
+})
+
+
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
 });
