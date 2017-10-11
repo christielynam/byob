@@ -58,7 +58,7 @@ const createHoliday = (knex, holiday) => {
 exports.seed = (knex, Promise) => {
   return knex('holidays').del()
     .then(() => knex('types').del())
-    .then( () => {
+    .then(() => {
 
       let typePromises = []
 
