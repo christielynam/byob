@@ -21,6 +21,30 @@ app.get('/', (request, response) => {
 });
 
 
+app.get('/api/v1/types', (request, response) => {
+  database('types').select()
+    .then(types => {
+      response.status(200).json(types)
+    })
+    .catch(error => {
+      response.status(500).json({ error })
+    })
+})
+
+app.get('/api/v1/holidays', (request, response) => {
+  database('holidays').select()
+    .then(holidays => {
+      response.status(200).json(holidays)
+    })
+    .catch(error => {
+      response.status(500).json({ error })
+    })
+})
+
+
+
+
+
 
 
 app.listen(app.get('port'), () => {
