@@ -31,7 +31,17 @@ app.get('/api/v1/types', (request, response) => {
 })
 
 app.get('/api/v1/holidays', (request, response) => {
-  database('holidays').select()
+  let { month } = request.query;
+
+  const checkParams = () => {
+    if (month) {
+      return database('holidays').where('month', month).select()
+    } else {
+      return database('holidays').select();
+    }
+  }
+
+  checkParams()
     .then(holidays => {
       response.status(200).json(holidays)
     })
@@ -75,18 +85,6 @@ app.get('/api/v1/types/:id/holidays', (request, response) => {
     response.status(500).json({ error })
   })
 })
-
-// app.get(`/api/v1/holidays?/${month}`, (request, response) => {
-//   const { month } = request.params;
-//
-//   database('holidays').where({ month }).select()
-//   .then(holidays => {
-//     response.status(200).json(holidays)
-//   })
-//   .catch(error => {
-//     response.status(500).json({ error })
-//   })
-// })
 
 app.post('/api/v1/types', (request, response) => {
   const type = request.body;
