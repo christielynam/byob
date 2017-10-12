@@ -1,9 +1,9 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const key = require('./key')
 
-const secretKey = process.env.SECRET_KEY || key
+const jwt = require('jsonwebtoken');
+const key = 'holiday' //this was living in a key file which has been .gitignored
 
 const bodyParser = require('body-parser');
 
@@ -16,12 +16,55 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.set('secretKey', process.env.SECRET_KEY || key)
+
 app.set('port', process.env.PORT || 3000);
 app.locals.title = 'BYOB';
 
 app.get('/', (request, response) => {
   response.send('Welcome to BYOB!')
 });
+
+const checkAuth = (request, response, next) => {
+  const token = request.headers.authorization
+
+  if(!token) {
+    return response.status(403).json({ error: 'You must be authorized to hit this endpoint' })
+  }
+
+  jwt.verify(token, app.get('secretKey'), (error, decoded) => {
+    if(error) {
+      response.status(403).json({ error: 'Invalid token' })
+    } else {
+      if(decoded) {
+        decoded.admin ? next()
+        :
+        response.status(403).json({ error: 'You are not authorized to have write access to this endpoint' })
+      }
+    }
+  })
+}
+
+app.post('/api/v1/authenticate', (request, response) => {
+  const { email, appName } = request.body;
+  const emailSuffix = email.split('@')[1];
+  const token = jwt.sign({ email, appName }, app.get('secretKey'))
+
+  if(!email || !appName) {
+    return response.status(422).json({ error: 'You are missing an email or application name' })
+  }
+
+  emailSuffix === 'turing.io' ?
+
+  Object.assign({}, { admin: true })
+
+  :
+
+  Object.assign({}, { admin: false })
+
+  return response.status(200).json({ token })
+
+})
 
 app.get('/api/v1/types', (request, response) => {
   database('types').select()
@@ -92,7 +135,7 @@ app.get('/api/v1/types/:id/holidays', (request, response) => {
   })
 })
 
-app.post('/api/v1/types', (request, response) => {
+app.post('/api/v1/types', checkAuth, (request, response) => {
   const type = request.body;
 
   for (let requiredParameter of ['type']) {
@@ -118,7 +161,7 @@ database('types').select().where('type', type.type)
   })
 })
 
-app.post('/api/v1/holidays', (request, response) => {
+app.post('/api/v1/holidays', checkAuth, (request, response) => {
   const holiday = request.body;
 
   for (let requiredParameter of ['name', 'fullDate', 'month', 'type_id']) {
@@ -138,7 +181,7 @@ app.post('/api/v1/holidays', (request, response) => {
     })
 })
 
-app.patch('/api/v1/holidays/:id', (request, response) => {
+app.patch('/api/v1/holidays/:id', checkAuth, (request, response) => {
   const holidayPatch = request.body;
 
   const { id } = request.params;
@@ -156,7 +199,7 @@ app.patch('/api/v1/holidays/:id', (request, response) => {
   })
 })
 
-app.patch('/api/v1/types/:id', (request, response) => {
+app.patch('/api/v1/types/:id', checkAuth, (request, response) => {
   const typePatch = request.body;
 
   const { id } = request.params;
@@ -174,7 +217,7 @@ app.patch('/api/v1/types/:id', (request, response) => {
   })
 })
 
-app.delete('/api/v1/holidays/:id', (request, response) => {
+app.delete('/api/v1/holidays/:id', checkAuth, (request, response) => {
   const { id } = request.params;
 
   database('holidays').where({ id }).del()
@@ -190,7 +233,7 @@ app.delete('/api/v1/holidays/:id', (request, response) => {
   })
 })
 
-app.delete('/api/v1/types/:id', (request, response) => {
+app.delete('/api/v1/types/:id', checkAuth, (request, response) => {
   const { id } = request.params;
 
   database('types').where({ id }).del()
