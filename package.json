@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test PORT=3001 mocha"
+    "test": "NODE_ENV=test PORT=3001 mocha --exit"
   },
   "keywords": [],
   "author": "",
