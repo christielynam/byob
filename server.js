@@ -26,7 +26,19 @@ app.get('/', (request, response) => {
 });
 
 const checkAuth = (request, response, next) => {
-  const token = request.headers.authorization
+  let token;
+
+  if(request.headers.authorization) {
+    token = request.headers.authorization
+  }
+
+  if(request.body.token) {
+    token = request.body.token
+  }
+
+  if(request.query.token) {
+    token = request.query.token
+  }
 
   if(!token) {
     return response.status(403).json({ error: 'You must be authorized to hit this endpoint' })
