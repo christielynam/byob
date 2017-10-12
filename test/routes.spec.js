@@ -271,7 +271,8 @@ describe('API Routes', () => {
           done();
         })
       })
-      
+    })
+
       it('should not create a type that already exists', (done) => {
       chai.request(server)
       .post('/api/v1/types')
@@ -290,7 +291,6 @@ describe('API Routes', () => {
           done();
         })
       })
-
     })
 
     it('should not create a type with missing params', (done) => {
@@ -304,13 +304,11 @@ describe('API Routes', () => {
         response.should.have.status(422);
         done();
       })
-
     })
+  })
 
-    })
 
-  
-          
+
   describe('DELETE /api/v1/holidays/:id', () => {
 
     it('should delete a holiday with matching ID', (done) => {
@@ -355,9 +353,5 @@ describe('API Routes', () => {
         })
       })
     })
-  })
-
-    
-  })
-
+  })    
 })
