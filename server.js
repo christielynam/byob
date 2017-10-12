@@ -148,11 +148,12 @@ database('types').select().where('type', type.type)
   .then(type => {
     if (type.length) {
       return response.status(400).json({error: 'type already exists'})
+    } else {
+      database('types').insert(type, '*')
+      .then(results => {
+        response.status(201).json(results)
+      })
     }
-  })
-  database('types').insert(type, '*')
-  .then(results => {
-    response.status(201).json(results)
   })
   .catch(error => {
     response.status(500).json({ error })
