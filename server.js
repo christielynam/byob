@@ -5,6 +5,9 @@ const path = require('path');
 const jwt = require('jsonwebtoken');
 const key = 'holiday' //this was living in a key file which has been .gitignored
 
+// NODE_ENV=test .node_modules/.bin/mocha --exit
+
+
 const bodyParser = require('body-parser');
 
 const environment = process.env.NODE_ENV || 'development';
@@ -34,13 +37,12 @@ const checkAuth = (request, response, next) => {
 
   jwt.verify(token, app.get('secretKey'), (error, decoded) => {
     if(error) {
-      response.status(403).json({ error: 'Invalid token' })
-    } else {
-      if(decoded) {
-        decoded.admin ? next()
-        :
-        response.status(403).json({ error: 'You are not authorized to have write access to this endpoint' })
-      }
+      return response.status(403).json({ error: 'Invalid token' })
+    }
+    if(decoded) {
+      decoded.admin ? next()
+      :
+      response.status(403).json({ error: 'You are not authorized to have write access to this endpoint' })
     }
   })
 }
@@ -48,20 +50,17 @@ const checkAuth = (request, response, next) => {
 app.post('/api/v1/authenticate', (request, response) => {
   const { email, appName } = request.body;
   const emailSuffix = email.split('@')[1];
-  const token = jwt.sign({ email, appName }, app.get('secretKey'))
 
   if(!email || !appName) {
     return response.status(422).json({ error: 'You are missing an email or application name' })
   }
 
-  emailSuffix === 'turing.io' ?
-
-  Object.assign({}, { admin: true })
-
+  let adminCheck = emailSuffix === 'turing.io' ?
+  Object.assign({}, { email, appName, admin: true })
   :
+  Object.assign({}, { email, appName, admin: false })
 
-  Object.assign({}, { admin: false })
-
+  const token = jwt.sign(adminCheck, app.get('secretKey'))
   return response.status(200).json({ token })
 
 })
