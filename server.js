@@ -245,9 +245,9 @@ app.delete('/api/v1/types/:id', checkAuth, (request, response) => {
 
 
 app.listen(app.get('port'), () => {
-   /* eslint-disable no-alert, no-console */
+  /* eslint-disable no-alert, no-console */
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
-   /* eslint-enable no-alert, no-console */
+  /* eslint-enable no-alert, no-console */
 });
 
 module.exports = app;
