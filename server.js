@@ -5,9 +5,6 @@ const path = require('path');
 const jwt = require('jsonwebtoken');
 const key = 'holiday' //this was living in a key file which has been .gitignored
 
-// NODE_ENV=test .node_modules/.bin/mocha --exit
-
-
 const bodyParser = require('body-parser');
 
 const environment = process.env.NODE_ENV || 'development';

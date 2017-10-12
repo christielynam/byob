@@ -17,7 +17,6 @@ exports.seed = function(knex, Promise) {
             type: 'food'
           }], 'id')
         .then(type => {
-          console.log(type);
           return knex('holidays').insert([
             {
               id: 1,
