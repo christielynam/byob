@@ -43,7 +43,7 @@ describe('API Routes', () => {
       chai.request(server)
           .post('/api/v1/authenticate')
           .send({ appName: 'New App', email: 'Johnny@turing.io' })
-          .end( (error, response) => token = JSON.parse(response.text).token)
+          .end((error, response) => token = JSON.parse(response.text).token)
   })
 
   beforeEach((done) => {
@@ -244,6 +244,69 @@ describe('API Routes', () => {
         done();
       })
     })
+  })
+
+  describe('POST /api/v1/types', () => {
+
+    it('should be able to add a new holiday type that does not already exist', (done) => {
+      chai.request(server)
+      .post('/api/v1/types')
+      .set('Authorization', token)
+      .send({
+        id: 4,
+        type: 'sports'
+      })
+      .end((error, response) => {
+        response.should.have.status(201);
+        response.body.should.be.a('array');
+        response.body.length.should.equal(1);
+        response.body[0].should.have.property('type');
+        response.body[0].type.should.equal('sports');
+        chai.request(server)
+        .get('/api/v1/types')
+        .end((error, response) => {
+          response.body.should.be.a('array');
+          response.body.length.should.equal(4);
+          done();
+        })
+      })
+    })
+
+    it('should not create a type that already exists', (done) => {
+      chai.request(server)
+      .post('/api/v1/types')
+      .set('Authorization', token)
+      .send({
+        id: 4,
+        type: 'food'
+      })
+      .end((error, response) => {
+        response.should.have.status(500);
+        chai.request(server)
+        .get('/api/v1/types')
+        .end((error, response) => {
+          response.body.should.be.a('array');
+          response.body.length.should.equal(3);
+          done();
+        })
+      })
+
+    })
+
+    it('should not create a type with missing params', (done) => {
+      chai.request(server)
+      .post('/api/v1/types')
+      .set('Authorization', token)
+      .send({
+        id: 4
+      })
+      .end((error, response) => {
+        response.should.have.status(422);
+        done();
+      })
+
+    })
+
   })
 
 })

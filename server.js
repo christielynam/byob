@@ -144,13 +144,7 @@ app.post('/api/v1/types', checkAuth, (request, response) => {
     }
   }
 
-database('types').select().where('type', type.type)
-  .then(type => {
-    if (type.length) {
-      return response.status(400).json({error: 'type already exists'})
-    }
-  })
-  database('types').insert(type, '*')
+  database('types').select().insert(type, '*')
   .then(results => {
     response.status(201).json(results)
   })
