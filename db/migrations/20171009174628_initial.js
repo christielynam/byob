@@ -3,7 +3,7 @@ exports.up = (knex, Promise) => {
   return Promise.all([
     knex.schema.createTable('types', (table) => {
       table.increments('id').primary()
-      table.string('type')
+      table.string('type').unique()
       table.timestamps(true, true)
     }),
 
