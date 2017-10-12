@@ -16,121 +16,120 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.set('secretKey', process.env.SECRET_KEY)
+app.set('secretKey', process.env.SECRET_KEY);
 
 app.set('port', process.env.PORT || 3000);
 app.locals.title = 'BYOB';
 
 app.get('/', (request, response) => {
-  response.send('Welcome to BYOB!')
+  response.send('Welcome to BYOB!');
 });
 
 const checkAuth = (request, response, next) => {
   let token;
 
   if(request.headers.authorization) {
-    token = request.headers.authorization
+    token = request.headers.authorization;
   }
 
   if(request.body.token) {
-    token = request.body.token
+    token = request.body.token;
   }
 
   if(request.query.token) {
-    token = request.query.token
+    token = request.query.token;
   }
 
   if(!token) {
-    return response.status(403).json({ error: 'You must be authorized to hit this endpoint' })
+    return response.status(403).json({ error: 'You must be authorized to hit this endpoint' });
   }
 
   jwt.verify(token, app.get('secretKey'), (error, decoded) => {
     if(error) {
-      return response.status(403).json({ error: 'Invalid token' })
+      return response.status(403).json({ error: 'Invalid token' });
     }
     if(decoded) {
       decoded.admin ? next()
       :
-      response.status(403).json({ error: 'You are not authorized to have write access to this endpoint' })
+      response.status(403).json({ error: 'You are not authorized to have write access to this endpoint' });
     }
-  })
-}
+  });
+};
 
 app.post('/api/v1/authenticate', (request, response) => {
   const { email, appName } = request.body;
   const emailSuffix = email.split('@')[1];
 
   if(!email || !appName) {
-    return response.status(422).json({ error: 'You are missing an email or application name' })
+    return response.status(422).json({ error: 'You are missing an email or application name' });
   }
 
   let adminCheck = emailSuffix === 'turing.io' ?
   Object.assign({}, { email, appName, admin: true })
   :
-  Object.assign({}, { email, appName, admin: false })
+  Object.assign({}, { email, appName, admin: false });
 
-  const token = jwt.sign(adminCheck, app.get('secretKey'))
-  return response.status(200).json({ token })
+  const token = jwt.sign(adminCheck, app.get('secretKey'));
+  return response.status(200).json({ token });
 
-})
+});
 
 app.get('/api/v1/types', (request, response) => {
   database('types').select()
     .then(types => {
-      response.status(200).json(types)
+      response.status(200).json(types);
     })
     .catch(error => {
-      response.status(500).json({ error })
-    })
-})
+      response.status(500).json({ error });
+    });
+});
 
 app.get('/api/v1/holidays', (request, response) => {
   let { month, fullDate } = request.query;
-  console.log(fullDate);
 
   const checkParams = () => {
     if (month) {
-      return database('holidays').where('month', month).select()
+      return database('holidays').where('month', month).select();
     }
     if (fullDate) {
-      return database('holidays').where('fullDate', fullDate).select()
+      return database('holidays').where('fullDate', fullDate).select();
     } else {
       return database('holidays').select();
     }
-  }
+  };
 
   checkParams()
     .then(holidays => {
-      response.status(200).json(holidays)
+      response.status(200).json(holidays);
     })
     .catch(error => {
-      response.status(500).json({ error })
-    })
-})
+      response.status(500).json({ error });
+    });
+});
 
 app.get('/api/v1/holidays/:id', (request, response) => {
   const { id } = request.params;
 
   database('holidays').where({ id }).select()
   .then(holidays => {
-    response.status(200).json(holidays)
+    response.status(200).json(holidays);
   })
   .catch(error => {
-    response.status(500).json({ error })
-  })
-})
+    response.status(500).json({ error });
+  });
+});
 
 app.get('/api/v1/types/:id/holidays', (request, response) => {
   const { id } = request.params;
 
   database('holidays').where({ type_id: id }).select()
   .then(holidays => {
-    response.status(200).json(holidays)
+    response.status(200).json(holidays);
   })
   .catch(error => {
-    response.status(500).json({ error })
-  })
-})
+    response.status(500).json({ error });
+  });
+});
 
 app.post('/api/v1/types', checkAuth, (request, response) => {
   const type = request.body;
@@ -140,18 +139,18 @@ app.post('/api/v1/types', checkAuth, (request, response) => {
     if(!type[requiredParameter]) {
       return response
         .status(422)
-        .send({ error: `Expected format: { type: <String> }. You're missing a "${requiredParameter}" property.` })
+        .send({ error: `Expected format: { type: <String> }. You're missing a "${requiredParameter}" property.` });
     }
   }
 
   database('types').select().insert(type, '*')
   .then(results => {
-    response.status(201).json(results)
+    response.status(201).json(results);
   })
   .catch(error => {
-    response.status(500).json({ error })
-  })
-})
+    response.status(500).json({ error });
+  });
+});
 
 app.post('/api/v1/holidays', checkAuth, (request, response) => {
   const holiday = request.body;
@@ -161,18 +160,18 @@ app.post('/api/v1/holidays', checkAuth, (request, response) => {
     if(!holiday[requiredParameter]) {
       return response
         .status(422)
-        .send({ error: `Expected format: { name: <String>, fullDate: <String>, month: <String>, type_id: <Integer> }. You're missing a "${requiredParameter}" property.` })
+        .send({ error: `Expected format: { name: <String>, fullDate: <String>, month: <String>, type_id: <Integer> }. You're missing a "${requiredParameter}" property.` });
     }
   }
 
   database('holidays').insert(holiday, '*')
     .then(results => {
-      response.status(201).json(results)
+      response.status(201).json(results);
     })
     .catch(error => {
-      response.status(500).json({ error })
-    })
-})
+      response.status(500).json({ error });
+    });
+});
 
 app.patch('/api/v1/holidays/:id', checkAuth, (request, response) => {
   const holidayPatch = request.body;
@@ -184,14 +183,14 @@ app.patch('/api/v1/holidays/:id', checkAuth, (request, response) => {
   .update(holidayPatch, '*')
   .then(results => {
     if (!results) {
-        response.status(404).json({ error: `Cannot find a holiday with the id of ${id}` })
+      response.status(404).json({ error: `Cannot find a holiday with the id of ${id}` });
     }
-    response.sendStatus(204)
+    response.sendStatus(204);
   })
   .catch(error => {
-    response.status(500).json({ error })
-  })
-})
+    response.status(500).json({ error });
+  });
+});
 
 app.patch('/api/v1/types/:id', checkAuth, (request, response) => {
   const typePatch = request.body;
@@ -203,14 +202,14 @@ app.patch('/api/v1/types/:id', checkAuth, (request, response) => {
   .update(typePatch, '*')
   .then(results => {
     if (!results) {
-        response.status(404).json({ error: `Cannot find a type with the id of ${id}` })
+      response.status(404).json({ error: `Cannot find a type with the id of ${id}` });
     }
-    response.sendStatus(204)
+    response.sendStatus(204);
   })
   .catch(error => {
-    response.status(500).json({ error })
-  })
-})
+    response.status(500).json({ error });
+  });
+});
 
 app.delete('/api/v1/holidays/:id', checkAuth, (request, response) => {
   const { id } = request.params;
@@ -218,15 +217,15 @@ app.delete('/api/v1/holidays/:id', checkAuth, (request, response) => {
   database('holidays').where({ id }).del()
   .then(holiday => {
     if (holiday) {
-      response.sendStatus(204)
+      response.sendStatus(204);
     } else {
-      response.status(422).json({ error: 'Not Found' })
+      response.status(422).json({ error: 'Not Found' });
     }
   })
   .catch(error => {
-    response.status(500).json({ error })
-  })
-})
+    response.status(500).json({ error });
+  });
+});
 
 app.delete('/api/v1/types/:id', checkAuth, (request, response) => {
   const { id } = request.params;
@@ -234,19 +233,21 @@ app.delete('/api/v1/types/:id', checkAuth, (request, response) => {
   database('types').where({ id }).del()
   .then(type => {
     if (type) {
-      response.sendStatus(204)
+      response.sendStatus(204);
     } else {
-      response.status(422).json({ error: 'Not Found' })
+      response.status(422).json({ error: 'Not Found' });
     }
   })
   .catch(error => {
-    response.status(500).json({ error })
-  })
-})
+    response.status(500).json({ error });
+  });
+});
 
 
 app.listen(app.get('port'), () => {
+   /* eslint-disable no-alert, no-console */
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
+   /* eslint-enable no-alert, no-console */
 });
 
 module.exports = app;
