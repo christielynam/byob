@@ -36,7 +36,7 @@ describe('Client Routes', () => {
 });
 
 describe('API Routes', () => {
-  
+
   let token;
 
   before((done) => {
@@ -254,7 +254,6 @@ describe('API Routes', () => {
     });
   });
 
-
   describe('POST /api/v1/types', () => {
 
     it('should be able to add a new holiday type that does not already exist', (done) => {
@@ -314,8 +313,6 @@ describe('API Routes', () => {
       });
     });
   });
-
-
 
   describe('DELETE /api/v1/holidays/:id', () => {
 
