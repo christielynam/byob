@@ -39,6 +39,11 @@ describe('API Routes', () => {
     database.migrate.latest()
       .then(() => done())
       .catch(error => console.log(error));
+
+      chai.request(server)
+          .post('/api/v1/authenticate')
+          .send({ appName: 'New App', email: 'Johnny@turing.io' })
+          .end( (error, response) => token = JSON.parse(response.text).token)
   })
 
   beforeEach((done) => {
@@ -169,6 +174,10 @@ describe('API Routes', () => {
       })
     })
 
+  })
+
+  describe('GET /api/v1/holidays/:id', () => {
+
     it('should retrieve a specific holiday', (done) => {
       chai.request(server)
       .get('/api/v1/holidays/2')
@@ -187,6 +196,15 @@ describe('API Routes', () => {
         response.body[0].month.should.equal('August');
         response.body[0].should.have.property('type_id');
         response.body[0].type_id.should.equal(2);
+        done();
+      })
+    })
+
+    it('should return a 404 if the path is incorrect', (done) => {
+      chai.request(server)
+      .get('/api/v1/i10')
+      .end((error, response) => {
+        response.should.have.status(404);
         done();
       })
     })

@@ -134,6 +134,7 @@ app.get('/api/v1/types/:id/holidays', (request, response) => {
 
 app.post('/api/v1/types', checkAuth, (request, response) => {
   const type = request.body;
+  delete type.token;
 
   for (let requiredParameter of ['type']) {
     if(!type[requiredParameter]) {
@@ -160,6 +161,7 @@ database('types').select().where('type', type.type)
 
 app.post('/api/v1/holidays', checkAuth, (request, response) => {
   const holiday = request.body;
+  delete holiday.token;
 
   for (let requiredParameter of ['name', 'fullDate', 'month', 'type_id']) {
     if(!holiday[requiredParameter]) {
@@ -180,6 +182,7 @@ app.post('/api/v1/holidays', checkAuth, (request, response) => {
 
 app.patch('/api/v1/holidays/:id', checkAuth, (request, response) => {
   const holidayPatch = request.body;
+  delete holidayPatch.token;
 
   const { id } = request.params;
 
@@ -198,6 +201,7 @@ app.patch('/api/v1/holidays/:id', checkAuth, (request, response) => {
 
 app.patch('/api/v1/types/:id', checkAuth, (request, response) => {
   const typePatch = request.body;
+  delete typePatch.token;
 
   const { id } = request.params;
 
