@@ -193,52 +193,6 @@ describe('API Routes', () => {
 
   })
 
-  describe('GET /api/v1/holidays/:month', () => {
-
-    it.skip('should retrieve all the holidays in a specific month', (done) => {
-      chai.request(server)
-      .get('/api/v1/holidays/October')
-      .end((error, response) => {
-        response.should.have.status(200);
-        response.should.be.json;
-        response.body.should.be.a('array');
-        response.body.length.should.equal(3);
-        response.body[0].should.have.property('id');
-        response.body[0].id.should.equal(1);
-        response.body[0].should.have.property('name');
-        response.body[0].name.should.equal('National Taco Day');
-        response.body[0].should.have.property('fullDate');
-        response.body[0].fullDate.should.equal('October 4');
-        response.body[0].should.have.property('month');
-        response.body[0].month.should.equal('October');
-        response.body[0].should.have.property('type_id');
-        response.body[0].type_id.should.equal(3);
-        response.body[1].should.have.property('id');
-        response.body[1].id.should.equal(2);
-        response.body[1].should.have.property('name');
-        response.body[1].name.should.equal('National Pasta Day');
-        response.body[1].should.have.property('fullDate');
-        response.body[1].fullDate.should.equal('October 17');
-        response.body[1].should.have.property('month');
-        response.body[1].month.should.equal('October');
-        response.body[1].should.have.property('type_id');
-        response.body[1].type_id.should.equal(2);
-        response.body[2].should.have.property('id');
-        response.body[2].id.should.equal(3);
-        response.body[2].should.have.property('name');
-        response.body[2].name.should.equal('Halloween');
-        response.body[2].should.have.property('fullDate');
-        response.body[2].fullDate.should.equal('October 31');
-        response.body[2].should.have.property('month');
-        response.body[2].month.should.equal('October');
-        response.body[2].should.have.property('type_id');
-        response.body[2].type_id.should.equal(1);
-        done();
-      })
-    })
-
-  })
-
   describe('GET /api/v1/types/:id/holidays', () => {
 
     it('should get all the holidays of a specific type', (done) => {

@@ -107,18 +107,6 @@ app.get('/api/v1/holidays/:id', (request, response) => {
   })
 })
 
-app.get('/api/v1/holidays/:month', (request, response) => {
-  const { month } = request.params;
-
-  database('holidays').where({ month }).select()
-  .then(holidays => {
-    response.status(200).json(holidays)
-  })
-  .catch(error => {
-    response.status(500).json({ error })
-  })
-})
-
 app.get('/api/v1/types/:id/holidays', (request, response) => {
   const { id } = request.params;
 
