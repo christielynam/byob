@@ -246,6 +246,7 @@ describe('API Routes', () => {
     })
   })
 
+
   describe('POST /api/v1/types', () => {
 
     it('should be able to add a new holiday type that does not already exist', (done) => {
@@ -270,9 +271,8 @@ describe('API Routes', () => {
           done();
         })
       })
-    })
-
-    it('should not create a type that already exists', (done) => {
+      
+      it('should not create a type that already exists', (done) => {
       chai.request(server)
       .post('/api/v1/types')
       .set('Authorization', token)
@@ -307,6 +307,57 @@ describe('API Routes', () => {
 
     })
 
+    })
+
+  
+          
+  describe('DELETE /api/v1/holidays/:id', () => {
+
+    it('should delete a holiday with matching ID', (done) => {
+      chai.request(server)
+      .delete('/api/v1/holidays/1')
+      .set('Authorization', token)
+      .end( (error, response) => {
+        response.should.have.status(204);
+        response.body.should.be.a('object');
+
+        chai.request(server)
+        .get('/api/v1/holidays')
+        .end( (error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.a('array');
+          response.body.length.should.equal(4);
+          response.res.text.should.not.include('National Relaxation Day');
+          done();
+        })
+      })
+    })
+  })
+
+  describe('DELETE /api/v1/types/:id', () => {
+
+    it('should delete a holiday type with matching ID', (done) => {
+      chai.request(server)
+      .delete('/api/v1/types/1')
+      .set('Authorization', token)
+      .end( (error, response) => {
+        response.should.have.status(204);
+        response.body.should.be.a('object');
+
+        chai.request(server)
+        .get('/api/v1/types')
+        .end( (error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.a('array');
+          response.body.length.should.equal(2);
+          response.res.text.should.not.include('activity');
+          done();
+        })
+      })
+    })
+  })
+
+    
   })
 
 })
