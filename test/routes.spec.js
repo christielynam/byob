@@ -307,7 +307,88 @@ describe('API Routes', () => {
     })
   })
 
+  describe('POST /api/v1/holidays', () => {
 
+    it('should be able to add a new holiday', (done) => {
+      chai.request(server)
+      .post('/api/v1/holidays')
+      .set('Authorization', token)
+      .send({
+        id: 6,
+        name: 'National Fun Day',
+        fullDate: 'March 1',
+        month: 'March',
+        type_id: 2
+      })
+      .end((error, response) => {
+        response.should.have.status(201);
+        response.body.should.be.a('array');
+        response.body.length.should.equal(1);
+        response.body[0].should.have.property('name');
+        response.body[0].name.should.equal('National Fun Day');
+        response.body[0].should.have.property('fullDate');
+        response.body[0].fullDate.should.equal('March 1');
+        response.body[0].should.have.property('month');
+        response.body[0].month.should.equal('March');
+        response.body[0].should.have.property('type_id');
+        response.body[0].type_id.should.equal(2);
+        chai.request(server)
+        .get('/api/v1/holidays')
+        .end((error, response) => {
+          response.body.should.be.a('array');
+          response.body.length.should.equal(6);
+          done();
+        })
+      })
+    })
+
+    it('should not create a holiday with missing params', (done) => {
+      chai.request(server)
+      .post('/api/v1/holidays')
+      .set('Authorization', token)
+      .send({
+        id: 7,
+        name: 'National YAY day'
+      })
+      .end((error, response) => {
+        response.should.have.status(422);
+        done();
+      })
+    })
+
+  })
+
+  describe('PATCH /api/v1/holidays/:id', () => {
+
+    it('should be able to update/change one or more values of a holiday with a given ID', (done) => {
+      chai.request(server)
+      .patch('/api/v1/holidays/5')
+      .send({
+        name: 'Happy Halloween'
+      })
+      .end((error, response) => {
+        response.should.have.status(201);
+        response.body.should.be.a('array');
+        response.body.length.should.equal(1);
+        response.body[0].should.have.property('name');
+        response.body[0].name.should.equal('Happy Halloween');
+        chai.request(server)
+        .get('/api/v1/holidays')
+        .end((error, response) => {
+          response.body.should.be.a('array');
+          response.body.length.should.equal(5);
+          done();
+        })
+      })
+    })
+  })
+
+  // describe('PATCH /api/v1/types/:id', () => {
+  //
+  //   it('should be able to update/change the type of holiday for a given type ID', (done) => {
+  //
+  //   })
+  // })
 
   describe('DELETE /api/v1/holidays/:id', () => {
 
@@ -353,5 +434,5 @@ describe('API Routes', () => {
         })
       })
     })
-  })    
+  })
 })
