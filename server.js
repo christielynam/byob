@@ -74,13 +74,14 @@ app.get('/api/v1/types', (request, response) => {
 
 app.get('/api/v1/holidays', (request, response) => {
   let { month, fullDate } = request.query;
+  console.log(fullDate);
 
   const checkParams = () => {
     if (month) {
       return database('holidays').where('month', month).select()
     }
     if (fullDate) {
-      return database('holidays').where('fullDate', fullDate.split(' ').join(''))
+      return database('holidays').where('fullDate', fullDate).select()
     } else {
       return database('holidays').select();
     }
