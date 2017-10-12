@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test .node_modules/.bin/mocha --exit"
+    "test": "echo \"Not testing\""
   },
   "keywords": [],
   "author": "",
