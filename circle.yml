@@ -13,3 +13,15 @@ deployment:
     branch: master
     heroku:
       appname: byob-cl
+
+test:
+  pre:
+    - eslint
+server.js
+    - eslint
+public/index.html
+    - eslint
+public/scripts.js
+    - eslint
+test/routes.spec.js
+    - eslint
