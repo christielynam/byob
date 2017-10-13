@@ -1,5 +1,7 @@
 const chai = require('chai');
+ /* eslint-disable no-alert, no-unused-vars */
 const should = chai.should();
+ /* eslint-enable no-alert, no-unused-vars */
 const chaiHttp = require('chai-http');
 const server = require('../server');
 
@@ -34,23 +36,29 @@ describe('Client Routes', () => {
 });
 
 describe('API Routes', () => {
+  
+  let token;
 
   before((done) => {
     database.migrate.latest()
       .then(() => done())
+       /* eslint-disable no-alert, no-console */
       .catch(error => console.log(error));
+       /* eslint-enable no-alert, no-console */
 
-      chai.request(server)
-          .post('/api/v1/authenticate')
-          .send({ appName: 'New App', email: 'Johnny@turing.io' })
-          .end((error, response) => token = JSON.parse(response.text).token)
-  })
+    chai.request(server)
+    .post('/api/v1/authenticate')
+    .send({ appName: 'New App', email: 'Johnny@turing.io' })
+    .end((error, response) => token = JSON.parse(response.text).token);
+  });
 
   beforeEach((done) => {
     database.seed.run()
       .then(() => done())
+       /* eslint-disable no-alert, no-console */
       .catch(error => console.log(error));
-  })
+       /* eslint-enable no-alert, no-console */
+  });
 
   describe('GET /api/v1/types', () => {
 
@@ -75,8 +83,8 @@ describe('API Routes', () => {
         response.body[2].should.have.property('type');
         response.body[2].type.should.equal('food');
         done();
-      })
-    })
+      });
+    });
 
     it('should return a 404 if the path is incorrect', (done) => {
       chai.request(server)
@@ -84,10 +92,10 @@ describe('API Routes', () => {
       .end((error, response) => {
         response.should.have.status(404);
         done();
-      })
-    })
+      });
+    });
 
-  })
+  });
 
   describe('GET /api/v1/holidays', () => {
 
@@ -130,8 +138,8 @@ describe('API Routes', () => {
         response.body[2].should.have.property('type_id');
         response.body[2].type_id.should.equal(3);
         done();
-      })
-    })
+      });
+    });
 
     it('should return a 404 if the path is incorrect', (done) => {
       chai.request(server)
@@ -139,8 +147,8 @@ describe('API Routes', () => {
       .end((error, response) => {
         response.should.have.status(404);
         done();
-      })
-    })
+      });
+    });
 
     it('should filter the holidays by query param', (done) => {
       chai.request(server)
@@ -171,10 +179,10 @@ describe('API Routes', () => {
         response.body[1].should.have.property('type_id');
         response.body[1].type_id.should.equal(2);
         done();
-      })
-    })
+      });
+    });
 
-  })
+  });
 
   describe('GET /api/v1/holidays/:id', () => {
 
@@ -197,8 +205,8 @@ describe('API Routes', () => {
         response.body[0].should.have.property('type_id');
         response.body[0].type_id.should.equal(2);
         done();
-      })
-    })
+      });
+    });
 
     it('should return a 404 if the path is incorrect', (done) => {
       chai.request(server)
@@ -206,10 +214,10 @@ describe('API Routes', () => {
       .end((error, response) => {
         response.should.have.status(404);
         done();
-      })
-    })
+      });
+    });
 
-  })
+  });
 
   describe('GET /api/v1/types/:id/holidays', () => {
 
@@ -242,9 +250,9 @@ describe('API Routes', () => {
         response.body[1].should.have.property('type_id');
         response.body[1].type_id.should.equal(1);
         done();
-      })
-    })
-  })
+      });
+    });
+  });
 
 
   describe('POST /api/v1/types', () => {
@@ -269,11 +277,11 @@ describe('API Routes', () => {
           response.body.should.be.a('array');
           response.body.length.should.equal(4);
           done();
-        })
-      })
-    })
+        });
+      });
+    });
 
-      it('should not create a type that already exists', (done) => {
+    it('should not create a type that already exists', (done) => {
       chai.request(server)
       .post('/api/v1/types')
       .set('Authorization', token)
@@ -289,9 +297,9 @@ describe('API Routes', () => {
           response.body.should.be.a('array');
           response.body.length.should.equal(3);
           done();
-        })
-      })
-    })
+        });
+      });
+    });
 
     it('should not create a type with missing params', (done) => {
       chai.request(server)
@@ -303,9 +311,9 @@ describe('API Routes', () => {
       .end((error, response) => {
         response.should.have.status(422);
         done();
-      })
-    })
-  })
+      });
+    });
+  });
 
   describe('POST /api/v1/holidays', () => {
 
@@ -456,10 +464,10 @@ describe('API Routes', () => {
           response.body.length.should.equal(4);
           response.res.text.should.not.include('National Relaxation Day');
           done();
-        })
-      })
-    })
-  })
+        });
+      });
+    });
+  });
 
   describe('DELETE /api/v1/types/:id', () => {
 
@@ -479,8 +487,9 @@ describe('API Routes', () => {
           response.body.length.should.equal(2);
           response.res.text.should.not.include('activity');
           done();
-        })
-      })
-    })
-  })
-})
+        });
+      });
+    });
+  });
+});
+

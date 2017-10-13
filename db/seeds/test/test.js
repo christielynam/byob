@@ -5,8 +5,8 @@ exports.seed = function(knex, Promise) {
       return Promise.all([
         knex('types').insert([
           {
-          id: 1,
-          type: 'activity'
+            id: 1,
+            type: 'activity'
           },
           {
             id: 2,
@@ -53,11 +53,13 @@ exports.seed = function(knex, Promise) {
               month: 'October',
               type_id: type[0]
             }
-          ])
+          ]);
         })
+         /* eslint-disable no-alert, no-console */
         .then(() => console.log('Seeding complete!'))
         .catch(error => console.log(`Error seeding data: ${error}`))
-      ])
+        /* eslint-disable no-alert, no-console */
+      ]);
     })
     .catch(error => console.log(`Error seeding data: ${error}`));
 };
