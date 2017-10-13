@@ -71,5 +71,5 @@ exports.seed = (knex, Promise) => {
     })
     /* eslint-disable no-alert, no-console */
     .catch(error => console.log(`Error seeding data: ${error}`));
-    /* eslint-enable no-alert, no-console */
+  /* eslint-enable no-alert, no-console */
 };
