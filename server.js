@@ -182,8 +182,8 @@ app.patch('/api/v1/holidays/:id', checkAuth, (request, response) => {
   database('holidays').where('id', id)
   .update(holidayPatch, '*')
   .then(results => {
-    if (!results) {
-      response.status(404).json({ error: `Cannot find a holiday with the id of ${id}` });
+    if (!results.length) {
+      return response.status(404).json({ error: `Cannot find a holiday with the id of ${id}` });
     }
     response.sendStatus(204);
   })
@@ -201,8 +201,8 @@ app.patch('/api/v1/types/:id', checkAuth, (request, response) => {
   database('types').where('id', id)
   .update(typePatch, '*')
   .then(results => {
-    if (!results) {
-      response.status(404).json({ error: `Cannot find a type with the id of ${id}` });
+    if (!results.length) {
+      return response.status(404).json({ error: `Cannot find a type with the id of ${id}` });
     }
     response.sendStatus(204);
   })
@@ -245,9 +245,9 @@ app.delete('/api/v1/types/:id', checkAuth, (request, response) => {
 
 
 app.listen(app.get('port'), () => {
-   /* eslint-disable no-alert, no-console */
+  /* eslint-disable no-alert, no-console */
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
-   /* eslint-enable no-alert, no-console */
+  /* eslint-enable no-alert, no-console */
 });
 
 module.exports = app;
