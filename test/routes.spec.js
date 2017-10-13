@@ -36,7 +36,6 @@ describe('Client Routes', () => {
 });
 
 describe('API Routes', () => {
-
   let token;
 
   before((done) => {
@@ -45,7 +44,6 @@ describe('API Routes', () => {
        /* eslint-disable no-alert, no-console */
       .catch(error => console.log(error));
        /* eslint-enable no-alert, no-console */
-
     chai.request(server)
     .post('/api/v1/authenticate')
     .send({ appName: 'New App', email: 'Johnny@turing.io' })
@@ -150,7 +148,7 @@ describe('API Routes', () => {
       });
     });
 
-    it('should filter the holidays by query param', (done) => {
+    it('should filter the holidays by month query', (done) => {
       chai.request(server)
       .get('/api/v1/holidays?month=August')
       .end((error, response) => {
@@ -178,6 +176,28 @@ describe('API Routes', () => {
         response.body[1].month.should.equal('August');
         response.body[1].should.have.property('type_id');
         response.body[1].type_id.should.equal(2);
+        done();
+      });
+    });
+
+    it('should filter the holidays by fullDate query', (done) => {
+      chai.request(server)
+      .get('/api/v1/holidays?fullDate=October 4')
+      .end((error, response) => {
+        response.should.have.status(200);
+        response.should.be.json;
+        response.body.should.be.a('array');
+        response.body.length.should.equal(1);
+        response.body[0].should.have.property('id');
+        response.body[0].id.should.equal(3);
+        response.body[0].should.have.property('name');
+        response.body[0].name.should.equal('National Taco Day');
+        response.body[0].should.have.property('fullDate');
+        response.body[0].fullDate.should.equal('October 4');
+        response.body[0].should.have.property('month');
+        response.body[0].month.should.equal('October');
+        response.body[0].should.have.property('type_id');
+        response.body[0].type_id.should.equal(3);
         done();
       });
     });
@@ -252,11 +272,12 @@ describe('API Routes', () => {
         done();
       });
     });
+
   });
 
   describe('POST /api/v1/types', () => {
 
-    it('should be able to add a new holiday type that does not already exist', (done) => {
+    it('should be able to add a new holiday type that does not already exist (token in Header)', (done) => {
       chai.request(server)
       .post('/api/v1/types')
       .set('Authorization', token)
@@ -277,6 +298,67 @@ describe('API Routes', () => {
           response.body.length.should.equal(4);
           done();
         });
+      });
+    });
+
+    it('should be able to add a new holiday type that does not already exist (token in query param)', (done) => {
+      chai.request(server)
+      .post(`/api/v1/types?token=${token}`)
+      .send({
+        id: 4,
+        type: 'sports'
+      })
+      .end((error, response) => {
+        response.should.have.status(201);
+        response.body.should.be.a('array');
+        response.body.length.should.equal(1);
+        response.body[0].should.have.property('type');
+        response.body[0].type.should.equal('sports');
+        chai.request(server)
+        .get('/api/v1/types')
+        .end((error, response) => {
+          response.body.should.be.a('array');
+          response.body.length.should.equal(4);
+          done();
+        });
+      });
+    });
+
+    it('should be able to add a new holiday type that does not already exist (token in request body)', (done) => {
+      chai.request(server)
+      .post('/api/v1/types')
+      .send({
+        id: 4,
+        type: 'sports',
+        token: token
+      })
+      .end((error, response) => {
+        response.should.have.status(201);
+        response.body.should.be.a('array');
+        response.body.length.should.equal(1);
+        response.body[0].should.have.property('type');
+        response.body[0].type.should.equal('sports');
+        chai.request(server)
+        .get('/api/v1/types')
+        .end((error, response) => {
+          response.body.should.be.a('array');
+          response.body.length.should.equal(4);
+          done();
+        });
+      });
+    });
+
+    it('should return a 403 status code if the token is not verified', (done) => {
+      chai.request(server)
+      .post('/api/v1/types')
+      .send({
+        id: 4,
+        type: 'sports',
+        token: 'turing'
+      })
+      .end((error, response) => {
+        response.should.have.status(403);
+        done();
       });
     });
 
@@ -316,7 +398,7 @@ describe('API Routes', () => {
 
   describe('POST /api/v1/holidays', () => {
 
-    it('should be able to add a new holiday', (done) => {
+    it('should be able to add a new holiday (token in Header)', (done) => {
       chai.request(server)
       .post('/api/v1/holidays')
       .set('Authorization', token)
@@ -349,6 +431,88 @@ describe('API Routes', () => {
       });
     });
 
+    it('should be able to add a new holiday (token in query param)', (done) => {
+      chai.request(server)
+      .post(`/api/v1/holidays?token=${token}`)
+      .send({
+        id: 6,
+        name: 'National Fun Day',
+        fullDate: 'March 1',
+        month: 'March',
+        type_id: 2
+      })
+      .end((error, response) => {
+        response.should.have.status(201);
+        response.body.should.be.a('array');
+        response.body.length.should.equal(1);
+        response.body[0].should.have.property('name');
+        response.body[0].name.should.equal('National Fun Day');
+        response.body[0].should.have.property('fullDate');
+        response.body[0].fullDate.should.equal('March 1');
+        response.body[0].should.have.property('month');
+        response.body[0].month.should.equal('March');
+        response.body[0].should.have.property('type_id');
+        response.body[0].type_id.should.equal(2);
+        chai.request(server)
+        .get('/api/v1/holidays')
+        .end((error, response) => {
+          response.body.should.be.a('array');
+          response.body.length.should.equal(6);
+          done();
+        });
+      });
+    });
+
+    it('should be able to add a new holiday (token in response body)', (done) => {
+      chai.request(server)
+      .post('/api/v1/holidays')
+      .send({
+        id: 6,
+        name: 'National Fun Day',
+        fullDate: 'March 1',
+        month: 'March',
+        type_id: 2,
+        token: token
+      })
+      .end((error, response) => {
+        response.should.have.status(201);
+        response.body.should.be.a('array');
+        response.body.length.should.equal(1);
+        response.body[0].should.have.property('name');
+        response.body[0].name.should.equal('National Fun Day');
+        response.body[0].should.have.property('fullDate');
+        response.body[0].fullDate.should.equal('March 1');
+        response.body[0].should.have.property('month');
+        response.body[0].month.should.equal('March');
+        response.body[0].should.have.property('type_id');
+        response.body[0].type_id.should.equal(2);
+        chai.request(server)
+        .get('/api/v1/holidays')
+        .end((error, response) => {
+          response.body.should.be.a('array');
+          response.body.length.should.equal(6);
+          done();
+        });
+      });
+    });
+
+    it('should return a 403 status code if the token is not verified', (done) => {
+      chai.request(server)
+      .post('/api/v1/holidays')
+      .send({
+        id: 6,
+        name: 'National Fun Day',
+        fullDate: 'March 1',
+        month: 'March',
+        type_id: 2,
+        token: 'turing'
+      })
+      .end((error, response) => {
+        response.should.have.status(403);
+        done();
+      });
+    });
+
     it('should not create a holiday with missing params', (done) => {
       chai.request(server)
       .post('/api/v1/holidays')
@@ -371,15 +535,13 @@ describe('API Routes', () => {
       name: 'Happy Halloween',
     };
 
-    it('should be able to update/change one or more values of a holiday with a given ID', (done) => {
-
+    it('should be able to update/change one or more values of a holiday with a given ID (token in Header)', (done) => {
       chai.request(server)
       .patch('/api/v1/holidays/5')
       .set('Authorization', token)
       .send(holidayPatch)
       .end((error, response) => {
         response.should.have.status(204);
-
         chai.request(server)
         .get('/api/v1/holidays/5')
         .set('Authorization', token)
@@ -392,8 +554,58 @@ describe('API Routes', () => {
       });
     });
 
-    it('should return a 404 error if a specific holiday is not found', (done) => {
+    it('should be able to update/change one or more values of a holiday with a given ID (token in query param)', (done) => {
+      chai.request(server)
+      .patch(`/api/v1/holidays/5?token=${token}`)
+      .send(holidayPatch)
+      .end((error, response) => {
+        response.should.have.status(204);
+        chai.request(server)
+        .get('/api/v1/holidays/5')
+        .set('Authorization', token)
+        .end((error, response) => {
+          response.body.should.be.a('array');
+          response.body.length.should.equal(1);
+          response.body[0].name.should.equal('Happy Halloween');
+          done();
+        });
+      });
+    });
 
+    it('should be able to update/change one or more values of a holiday with a given ID (token in response body)', (done) => {
+      chai.request(server)
+      .patch('/api/v1/holidays/5')
+      .send({
+        name: 'Happy Halloween',
+        token: token
+      })
+      .end((error, response) => {
+        response.should.have.status(204);
+        chai.request(server)
+        .get('/api/v1/holidays/5')
+        .end((error, response) => {
+          response.body.should.be.a('array');
+          response.body.length.should.equal(1);
+          response.body[0].name.should.equal('Happy Halloween');
+          done();
+        });
+      });
+    });
+
+    it('should return a 403 status code if the token is not verified', (done) => {
+      chai.request(server)
+      .patch('/api/v1/holidays/5')
+      .send({
+        name: 'Happy Halloween',
+        token: 'byob'
+      })
+      .end((error, response) => {
+        response.should.have.status(403);
+        done();
+      });
+    });
+
+    it('should return a 404 error if a specific holiday is not found', (done) => {
       chai.request(server)
       .patch('/api/v1/holidays/88')
       .set('Authorization', token)
@@ -413,14 +625,12 @@ describe('API Routes', () => {
     };
 
     it('should be able to update/change one or more values of a type with a given ID', (done) => {
-
       chai.request(server)
       .patch('/api/v1/types/3')
       .set('Authorization', token)
       .send(holidayPatch)
       .end((error, response) => {
         response.should.have.status(204);
-
         chai.request(server)
         .get('/api/v1/types/3')
         .end((error, response) => {
@@ -431,7 +641,6 @@ describe('API Routes', () => {
     });
 
     it('should return a 404 error if a specific type is not found', (done) => {
-
       chai.request(server)
       .patch('/api/v1/types/88')
       .set('Authorization', token)
@@ -452,7 +661,6 @@ describe('API Routes', () => {
       .end( (error, response) => {
         response.should.have.status(204);
         response.body.should.be.a('object');
-
         chai.request(server)
         .get('/api/v1/holidays')
         .end( (error, response) => {
@@ -475,7 +683,6 @@ describe('API Routes', () => {
       .end( (error, response) => {
         response.should.have.status(204);
         response.body.should.be.a('object');
-
         chai.request(server)
         .get('/api/v1/types')
         .end( (error, response) => {
