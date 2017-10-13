@@ -360,35 +360,83 @@ describe('API Routes', () => {
 
   describe('PATCH /api/v1/holidays/:id', () => {
 
+    const holidayPatch = {
+      name: 'Happy Halloween',
+    }
+
     it('should be able to update/change one or more values of a holiday with a given ID', (done) => {
+
       chai.request(server)
       .patch('/api/v1/holidays/5')
-      .send({
-        name: 'Happy Halloween'
-      })
+      .set('Authorization', token)
+      .send(holidayPatch)
       .end((error, response) => {
-        response.should.have.status(201);
-        response.body.should.be.a('array');
-        response.body.length.should.equal(1);
-        response.body[0].should.have.property('name');
-        response.body[0].name.should.equal('Happy Halloween');
+        response.should.have.status(204);
+
         chai.request(server)
-        .get('/api/v1/holidays')
+        .get('/api/v1/holidays/5')
+        .set('Authorization', token)
         .end((error, response) => {
           response.body.should.be.a('array');
-          response.body.length.should.equal(5);
-          done();
+          response.body.length.should.equal(1);
+          response.body[0].name.should.equal('Happy Halloween')
+      done();
         })
       })
     })
+
+    it('should return a 404 error if a specific holiday is not found', (done) => {
+
+      chai.request(server)
+      .patch('/api/v1/holidays/88')
+      .set('Authorization', token)
+      .send(holidayPatch)
+      .end((error, response) => {
+        response.should.have.status(404);
+      })
+    })
+
   })
 
-  // describe('PATCH /api/v1/types/:id', () => {
-  //
-  //   it('should be able to update/change the type of holiday for a given type ID', (done) => {
-  //
-  //   })
-  // })
+  describe('PATCH /api/v1/types/:id', () => {
+
+    const holidayPatch = {
+      type: 'social',
+    }
+
+    it('should be able to update/change one or more values of a type with a given ID', (done) => {
+
+      chai.request(server)
+      .patch('/api/v1/types/3')
+      .set('Authorization', token)
+      .send(holidayPatch)
+      .end((error, response) => {
+        response.should.have.status(204);
+
+        chai.request(server)
+        .get('/api/v1/types/3')
+        .set('Authorization', token)
+        .end((error, response) => {
+          response.body.should.be.a('array');
+          response.body.length.should.equal(1);
+          response.body[0].type.should.equal('social')
+      done();
+        })
+      })
+    })
+
+    it('should return a 404 error if a specific type is not found', (done) => {
+
+      chai.request(server)
+      .patch('/api/v1/types/88')
+      .set('Authorization', token)
+      .send(holidayPatch)
+      .end((error, response) => {
+        response.should.have.status(404);
+      })
+    })
+
+  })
 
   describe('DELETE /api/v1/holidays/:id', () => {
 
