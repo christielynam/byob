@@ -15,12 +15,11 @@ const generateToken = (e) => {
     })
   })
   .then(results => results.json())
-  .then(results => $('.token').append(`<h3>${results.token}</h3>`))
-  
+  .then(results => $('.token').append(`<h3>${results.token}</h3>`));
+
   $('.email-input').val('');
   $('.app-name-input').val('');
-}
+};
 
 
-
-$('button').on('click', generateToken)
+$('button').on('click', generateToken);
