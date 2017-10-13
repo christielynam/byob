@@ -19,3 +19,6 @@ test:
     - eslint server.js
     - eslint public/scripts.js
     - eslint test/routes.spec.js
+    - eslint db/migrations/20171009174628_initial.js
+    - eslint db/seeds/dev/unofficial_holidays.js
+    - eslint db/seeds/test/test.js
