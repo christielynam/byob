@@ -1,11 +1,9 @@
 # BYOB
--
 
 This API provides access to the database of unofficial Holidays throughout the year. Each Holiday provides a Holiday Name, Full Date, Month and a Holiday Type category.
 
 
 # Endpoints
--
 
 ### POST Authenticate
 
@@ -31,7 +29,6 @@ POST Authenticate
 }
 ```
 
--
 
 ### GET Types
 
@@ -83,7 +80,6 @@ GET Types
 ]
 ```
 
--
 
 ### GET Holidays
 
@@ -156,8 +152,6 @@ GET Holidays
 ]
 ```
 
--
-
 ### GET Holidays by ID
 
 ```
@@ -189,8 +183,6 @@ GET holidays:id
 ]
 
 ```
-
--
 
 
 ### GET Holidays corresponding to a specific type
@@ -359,7 +351,6 @@ GET types/:id/holidays
 ]
 ```
 
--
 
 ### POST a new Type of Holiday
 
@@ -391,8 +382,6 @@ POST types
     }
 ]
 ```
-
--
 
 ### POST a new Holiday
 
@@ -428,8 +417,6 @@ POST holidays
 ]
 ```
 
--
-
 ### PATCH Holidays by ID
 
 ```
@@ -453,8 +440,6 @@ PATCH holidays/:id
 ```
 User will not see a return object for a successful PATCH - instead will have a successful 204 response. New changes will be reflected in the database.
 ```
-
--
 
 ### PATCH Types by ID
 
@@ -480,8 +465,6 @@ PATCH types/:id
 User will not see a return object for a successful PATCH - instead will have a successful 204 response. New changes will be reflected in the database.
 ```
 
--
-
 ### DELETE a Type of Holiday
 
 ```
@@ -504,8 +487,6 @@ DELETE types
 ```
 User will not see a return object for a successful PATCH - instead will have a successful 204 response. New changes will be reflected in the database.
 ```
-
--
 
 ### DELETE a Holiday
 
