@@ -58,8 +58,8 @@ exports.seed = function(knex, Promise) {
          /* eslint-disable no-alert, no-console */
         .then(() => console.log('Seeding complete!'))
         .catch(error => console.log(`Error seeding data: ${error}`))
-        /* eslint-disable no-alert, no-console */
       ]);
     })
     .catch(error => console.log(`Error seeding data: ${error}`));
+    /* eslint-enable no-alert, no-console */
 };
