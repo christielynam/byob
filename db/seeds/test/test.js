@@ -16,50 +16,50 @@ exports.seed = function(knex, Promise) {
             id: 3,
             type: 'food'
           }], 'id')
-        .then(type => {
-          return knex('holidays').insert([
-            {
-              id: 1,
-              name: 'National Relaxation Day',
-              fullDate: 'August 15',
-              month: 'August',
-              type_id: type[0]
-            },
-            {
-              id: 2,
-              name: 'National Red Wine Day',
-              fullDate: 'August 28',
-              month: 'August',
-              type_id: type[1]
-            },
-            {
-              id: 3,
-              name: 'National Taco Day',
-              fullDate: 'October 4',
-              month: 'October',
-              type_id: type[2]
-            },
-            {
-              id: 4,
-              name: 'National Pasta Day',
-              fullDate: 'October 17',
-              month: 'October',
-              type_id: type[2]
-            },
-            {
-              id: 5,
-              name: 'Halloween',
-              fullDate: 'October 31',
-              month: 'October',
-              type_id: type[0]
-            }
-          ]);
-        })
-         /* eslint-disable no-alert, no-console */
-        .then(() => console.log('Seeding complete!'))
-        .catch(error => console.log(`Error seeding data: ${error}`))
+          .then(type => {
+            return knex('holidays').insert([
+              {
+                id: 1,
+                name: 'National Relaxation Day',
+                fullDate: 'August 15',
+                month: 'August',
+                type_id: type[0]
+              },
+              {
+                id: 2,
+                name: 'National Red Wine Day',
+                fullDate: 'August 28',
+                month: 'August',
+                type_id: type[1]
+              },
+              {
+                id: 3,
+                name: 'National Taco Day',
+                fullDate: 'October 4',
+                month: 'October',
+                type_id: type[2]
+              },
+              {
+                id: 4,
+                name: 'National Pasta Day',
+                fullDate: 'October 17',
+                month: 'October',
+                type_id: type[2]
+              },
+              {
+                id: 5,
+                name: 'Halloween',
+                fullDate: 'October 31',
+                month: 'October',
+                type_id: type[0]
+              }
+            ]);
+          })
+        /* eslint-disable no-alert, no-console */
+          .then(() => console.log('Seeding complete!'))
+          .catch(error => console.log(`Error seeding data: ${error}`))
       ]);
     })
     .catch(error => console.log(`Error seeding data: ${error}`));
-    /* eslint-enable no-alert, no-console */
+  /* eslint-enable no-alert, no-console */
 };
