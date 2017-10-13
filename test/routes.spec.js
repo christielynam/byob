@@ -348,7 +348,7 @@ describe('API Routes', () => {
       });
     });
 
-    it('should return a 403 status code if the token is not verified', (done) => {
+    it('should return a 403 status code and not allow the user to add a type if the token is not verified', (done) => {
       chai.request(server)
       .post('/api/v1/types')
       .send({
@@ -496,7 +496,7 @@ describe('API Routes', () => {
       });
     });
 
-    it('should return a 403 status code if the token is not verified', (done) => {
+    it('should return a 403 status code and not allow the user to add a holiday if the token is not verified', (done) => {
       chai.request(server)
       .post('/api/v1/holidays')
       .send({
@@ -592,7 +592,7 @@ describe('API Routes', () => {
       });
     });
 
-    it('should return a 403 status code if the token is not verified', (done) => {
+    it('should return a 403 status code and not allow an update if the token is not verified', (done) => {
       chai.request(server)
       .patch('/api/v1/holidays/5')
       .send({
@@ -624,7 +624,7 @@ describe('API Routes', () => {
       type: 'social',
     };
 
-    it('should be able to update/change one or more values of a type with a given ID', (done) => {
+    it('should be able to update/change one or more values of a type with a given ID (token in Header)', (done) => {
       chai.request(server)
       .patch('/api/v1/types/3')
       .set('Authorization', token)
@@ -637,6 +637,52 @@ describe('API Routes', () => {
           response.body.should.be.a('object');
           done();
         });
+      });
+    });
+
+    it('should be able to update/change one or more values of a type with a given ID (token in query param)', (done) => {
+      chai.request(server)
+      .patch(`/api/v1/types/3?token=${token}`)
+      .send(holidayPatch)
+      .end((error, response) => {
+        response.should.have.status(204);
+        chai.request(server)
+        .get('/api/v1/types/3')
+        .end((error, response) => {
+          response.body.should.be.a('object');
+          done();
+        });
+      });
+    });
+
+    it('should be able to update/change one or more values of a type with a given ID (token in response body)', (done) => {
+      chai.request(server)
+      .patch('/api/v1/types/3')
+      .send({
+        type: 'social',
+        token: token
+      })
+      .end((error, response) => {
+        response.should.have.status(204);
+        chai.request(server)
+        .get('/api/v1/types/3')
+        .end((error, response) => {
+          response.body.should.be.a('object');
+          done();
+        });
+      });
+    });
+
+    it('should return a 403 status code and not allow an update if the token is not verified', (done) => {
+      chai.request(server)
+      .patch('/api/v1/types/3')
+      .send({
+        type: 'social',
+        token: 'byob'
+      })
+      .end((error, response) => {
+        response.should.have.status(403);
+        done();
       });
     });
 
@@ -654,7 +700,7 @@ describe('API Routes', () => {
 
   describe('DELETE /api/v1/holidays/:id', () => {
 
-    it('should delete a holiday with matching ID', (done) => {
+    it('should delete a holiday with matching ID (token in Header)', (done) => {
       chai.request(server)
       .delete('/api/v1/holidays/1')
       .set('Authorization', token)
@@ -672,11 +718,40 @@ describe('API Routes', () => {
         });
       });
     });
+
+    it('should delete a holiday with matching ID (token in query param)', (done) => {
+      chai.request(server)
+      .delete(`/api/v1/holidays/1?token=${token}`)
+      .end( (error, response) => {
+        response.should.have.status(204);
+        response.body.should.be.a('object');
+        chai.request(server)
+        .get('/api/v1/holidays')
+        .end( (error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.a('array');
+          response.body.length.should.equal(4);
+          response.res.text.should.not.include('National Relaxation Day');
+          done();
+        });
+      });
+    });
+
+    it('should return a 403 status code and not delete the holiday if the token is not verified', (done) => {
+      chai.request(server)
+      .delete('/api/v1/holidays/1')
+      .set('Authorization', 'turing')
+      .end( (error, response) => {
+        response.should.have.status(403);
+        done();
+      });
+    });
+
   });
 
   describe('DELETE /api/v1/types/:id', () => {
 
-    it('should delete a holiday type with matching ID', (done) => {
+    it('should delete a holiday type with matching ID (token in Header)', (done) => {
       chai.request(server)
       .delete('/api/v1/types/1')
       .set('Authorization', token)
@@ -694,5 +769,36 @@ describe('API Routes', () => {
         });
       });
     });
+
+    it('should delete a holiday type with matching ID (token in query param)', (done) => {
+      chai.request(server)
+      .delete(`/api/v1/types/1?token=${token}`)
+      .set('Authorization', token)
+      .end( (error, response) => {
+        response.should.have.status(204);
+        response.body.should.be.a('object');
+        chai.request(server)
+        .get('/api/v1/types')
+        .end( (error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.a('array');
+          response.body.length.should.equal(2);
+          response.res.text.should.not.include('activity');
+          done();
+        });
+      });
+    });
+
+    it('should return a 403 status code and not delete the type if the token is not verified', (done) => {
+      chai.request(server)
+      .delete('/api/v1/holidays/1')
+      .set('Authorization', 'turing')
+      .end( (error, response) => {
+        response.should.have.status(403);
+        done();
+      });
+    });
+
   });
+
 });
