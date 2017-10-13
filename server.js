@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const jwt = require('jsonwebtoken');
-// const key = 'holiday' //this was living in a key file which has been .gitignored
+
 const bodyParser = require('body-parser');
 
 const environment = process.env.NODE_ENV || 'development';

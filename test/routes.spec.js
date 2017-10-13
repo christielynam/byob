@@ -441,9 +441,7 @@ describe('API Routes', () => {
         done();
       });
     });
-
   });
-
 
   describe('DELETE /api/v1/holidays/:id', () => {
 
