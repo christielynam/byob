@@ -23,3 +23,4 @@ test:
     - eslint db/seeds/dev/unofficial_holidays.js
     - eslint db/seeds/test/test.js
     - eslint db/seeds/data/unofficial_holiday.js
+    - eslint knexfile.js
