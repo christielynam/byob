@@ -182,7 +182,7 @@ app.patch('/api/v1/holidays/:id', checkAuth, (request, response) => {
   database('holidays').where('id', id)
   .update(holidayPatch, '*')
   .then(results => {
-    if (!results) {
+    if (!results.length) {
       response.status(404).json({ error: `Cannot find a holiday with the id of ${id}` });
     }
     response.sendStatus(204);
@@ -201,7 +201,7 @@ app.patch('/api/v1/types/:id', checkAuth, (request, response) => {
   database('types').where('id', id)
   .update(typePatch, '*')
   .then(results => {
-    if (!results) {
+    if (!results.length) {
       response.status(404).json({ error: `Cannot find a type with the id of ${id}` });
     }
     response.sendStatus(204);
