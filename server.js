@@ -50,8 +50,8 @@ const checkAuth = (request, response, next) => {
     }
     if(decoded) {
       decoded.admin ? next()
-      :
-      response.status(403).json({ error: 'You are not authorized to have write access to this endpoint' });
+        :
+        response.status(403).json({ error: 'You are not authorized to have write access to this endpoint' });
     }
   });
 };
@@ -65,9 +65,9 @@ app.post('/api/v1/authenticate', (request, response) => {
   }
 
   let adminCheck = emailSuffix === 'turing.io' ?
-  Object.assign({}, { email, appName, admin: true })
-  :
-  Object.assign({}, { email, appName, admin: false });
+    Object.assign({}, { email, appName, admin: true })
+    :
+    Object.assign({}, { email, appName, admin: false });
 
   const token = jwt.sign(adminCheck, app.get('secretKey'));
   return response.status(200).json({ token });
@@ -111,24 +111,24 @@ app.get('/api/v1/holidays/:id', (request, response) => {
   const { id } = request.params;
 
   database('holidays').where({ id }).select()
-  .then(holidays => {
-    response.status(200).json(holidays);
-  })
-  .catch(error => {
-    response.status(500).json({ error });
-  });
+    .then(holidays => {
+      response.status(200).json(holidays);
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
 });
 
 app.get('/api/v1/types/:id/holidays', (request, response) => {
   const { id } = request.params;
 
   database('holidays').where({ type_id: id }).select()
-  .then(holidays => {
-    response.status(200).json(holidays);
-  })
-  .catch(error => {
-    response.status(500).json({ error });
-  });
+    .then(holidays => {
+      response.status(200).json(holidays);
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
 });
 
 app.post('/api/v1/types', checkAuth, (request, response) => {
@@ -144,12 +144,12 @@ app.post('/api/v1/types', checkAuth, (request, response) => {
   }
 
   database('types').select().insert(type, '*')
-  .then(results => {
-    response.status(201).json(results);
-  })
-  .catch(error => {
-    response.status(500).json({ error });
-  });
+    .then(results => {
+      response.status(201).json(results);
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
 });
 
 app.post('/api/v1/holidays', checkAuth, (request, response) => {
@@ -180,16 +180,16 @@ app.patch('/api/v1/holidays/:id', checkAuth, (request, response) => {
   const { id } = request.params;
 
   database('holidays').where('id', id)
-  .update(holidayPatch, '*')
-  .then(results => {
-    if (!results.length) {
-      return response.status(404).json({ error: `Cannot find a holiday with the id of ${id}` });
-    }
-    response.sendStatus(204);
-  })
-  .catch(error => {
-    response.status(500).json({ error });
-  });
+    .update(holidayPatch, '*')
+    .then(results => {
+      if (!results.length) {
+        return response.status(404).json({ error: `Cannot find a holiday with the id of ${id}` });
+      }
+      response.sendStatus(204);
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
 });
 
 app.patch('/api/v1/types/:id', checkAuth, (request, response) => {
@@ -199,48 +199,48 @@ app.patch('/api/v1/types/:id', checkAuth, (request, response) => {
   const { id } = request.params;
 
   database('types').where('id', id)
-  .update(typePatch, '*')
-  .then(results => {
-    if (!results.length) {
-      return response.status(404).json({ error: `Cannot find a type with the id of ${id}` });
-    }
-    response.sendStatus(204);
-  })
-  .catch(error => {
-    response.status(500).json({ error });
-  });
+    .update(typePatch, '*')
+    .then(results => {
+      if (!results.length) {
+        return response.status(404).json({ error: `Cannot find a type with the id of ${id}` });
+      }
+      response.sendStatus(204);
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
 });
 
 app.delete('/api/v1/holidays/:id', checkAuth, (request, response) => {
   const { id } = request.params;
 
   database('holidays').where({ id }).del()
-  .then(holiday => {
-    if (holiday) {
-      response.sendStatus(204);
-    } else {
-      response.status(422).json({ error: 'Not Found' });
-    }
-  })
-  .catch(error => {
-    response.status(500).json({ error });
-  });
+    .then(holiday => {
+      if (holiday) {
+        response.sendStatus(204);
+      } else {
+        response.status(422).json({ error: 'Not Found' });
+      }
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
 });
 
 app.delete('/api/v1/types/:id', checkAuth, (request, response) => {
   const { id } = request.params;
 
   database('types').where({ id }).del()
-  .then(type => {
-    if (type) {
-      response.sendStatus(204);
-    } else {
-      response.status(422).json({ error: 'Not Found' });
-    }
-  })
-  .catch(error => {
-    response.status(500).json({ error });
-  });
+    .then(type => {
+      if (type) {
+        response.sendStatus(204);
+      } else {
+        response.status(422).json({ error: 'Not Found' });
+      }
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
 });
 
 
