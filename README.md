@@ -1,30 +1,30 @@
-#BYOB
+# BYOB
 -
 
 This API provides access to the database of unofficial Holidays throughout the year. Each Holiday provides a Holiday Name, Full Date, Month and a Holiday Type category.
 
 
-#Endpoints
+# Endpoints
 -
 
-###POST Authenticate
+### POST Authenticate
 
 ```
 POST Authenticate
 
 ```
 
-####Description:
+#### Description:
 * Issues the user a JWT according to authorization level.
 * User will need to submit email and application name in order to be issued a JWT.
 * Only users with a valid email ending in @turing.io will be granted "Admin" privileges to be able to POST, PUT, PATCH, DELETE
 
-####Example:
+#### Example:
 ```
 '/api/v1/authenticate'
 ```
 
-####Return:
+#### Return:
 ```
 {
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFuYUB0dXJpbmcuaW8iLCJhcHBOYW1lIjoibXlBUFAiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTA3OTE2ODEwfQ.FF12hQgW-NT-sOCIBRRoQJpmp5wXwL3RwJuYoWP1qH0"
@@ -33,21 +33,21 @@ POST Authenticate
 
 -
 
-###GET Types
+### GET Types
 
 ```
 GET Types
 ```
 
-####Description
+#### Description
 * Returns all types of Holidays
 
-####Example
+#### Example
 ```
 '/api/v1/types'
 ```
 
-####Return
+#### Return
 ```
 [
     {
@@ -85,27 +85,27 @@ GET Types
 
 -
 
-###GET Holidays
+### GET Holidays
 
 ```
 GET Holidays
 
 ```
 
-####Description
+#### Description
 * Get all Holidays, user may also specify a query param of full date which will return all holidays with that date, or by month which will return all holidays within a given month.
 * Month must be capitalized in both full date and month params.
 * User must include a space between month and day when entering a full month.
 
 
-####Example
+#### Example
 ```
 '/api/v1/holidays'
 '/api/v1/holidays/?fullDate=March 4' *note space between month-day
 '/api/v1/holidays/?month=November'
 ```
 
-####Return
+#### Return
 ```
 [
     {
@@ -158,23 +158,23 @@ GET Holidays
 
 -
 
-###GET Holidays by ID
+### GET Holidays by ID
 
 ```
 GET holidays:id
 
 ```
 
-####Description
+#### Description
 * Get a specific Holiday by ID
 
 
-####Example
+#### Example
 ```
 '/api/v1/holidays:id'
 ```
 
-####Return
+#### Return
 ```
 [
     {
@@ -193,23 +193,23 @@ GET holidays:id
 -
 
 
-###GET Holidays corresponding to a specific type
+### GET Holidays corresponding to a specific type
 
 ```
 GET types/:id/holidays
 
 ```
 
-####Description
+#### Description
 * Get all holidays with a specified type ID.
 
 
-####Example
+#### Example
 ```
 '/api/v1/types/:id/holidays'
 ```
 
-####Return
+#### Return
 ```
 [
     {
@@ -361,26 +361,26 @@ GET types/:id/holidays
 
 -
 
-###POST a new Type of Holiday
+### POST a new Type of Holiday
 
 ```
 POST types
 
 ```
 
-####Authentication:
+#### Authentication:
 * JWT is required to be passed in either Header, Request Body or as a Query Param ('/api/v1/holidays/?token=USER_JWT').
 
-####Description
+#### Description
 * Add a new holiday type to the database. User can only add a new type that does not already exist in the database.
 
 
-####Example
+#### Example
 ```
 '/api/v1/types'
 ```
 
-####Return
+#### Return
 ```
 [
     {
@@ -394,26 +394,26 @@ POST types
 
 -
 
-###POST a new Holiday
+### POST a new Holiday
 
 ```
 POST holidays
 
 ```
 
-####Authentication:
+#### Authentication:
 * JWT is required to be passed in either Header, Request Body or as a Query Param ('/api/v1/holidays/?token=USER_JWT').
 
-####Description
+#### Description
 * Post a new holiday to the database.
 
 
-####Example
+#### Example
 ```
 '/api/v1/holidays'
 ```
 
-####Return
+#### Return
 ```
 [
     {
@@ -430,103 +430,103 @@ POST holidays
 
 -
 
-###PATCH Holidays by ID
+### PATCH Holidays by ID
 
 ```
 PATCH holidays/:id
 
 ```
 
-####Authentication:
+#### Authentication:
 * JWT is required to be passed in either Header, Request Body or as a Query Param ('/api/v1/holidays/?token=USER_JWT').
 
-####Description
+#### Description
 * Make a change to a portion/all of the information about a holiday already existing within the database that matches given ID.
 
 
-####Example
+#### Example
 ```
 '/api/v1/types/:id/holidays'
 ```
 
-####Return
+#### Return
 ```
 User will not see a return object for a successful PATCH - instead will have a successful 204 response. New changes will be reflected in the database.
 ```
 
 -
 
-###PATCH Types by ID
+### PATCH Types by ID
 
 ```
 PATCH types/:id
 
 ```
 
-####Authentication:
+#### Authentication:
 * JWT is required to be passed in either Header, Request Body or as a Query Param ('/api/v1/holidays/?token=USER_JWT').
 
-####Description
+#### Description
 * Make a change to a type of holiday already existing within the database that matches given ID.
 
 
-####Example
+#### Example
 ```
 '/api/v1/types/:id'
 ```
 
-####Return
+#### Return
 ```
 User will not see a return object for a successful PATCH - instead will have a successful 204 response. New changes will be reflected in the database.
 ```
 
 -
 
-###DELETE a Type of Holiday
+### DELETE a Type of Holiday
 
 ```
 DELETE types
 
 ```
-####Authentication:
+#### Authentication:
 * JWT is required to be passed in either Header or a Query Param ('/api/v1/holidays/?token=USER_JWT').
 
-####Description
+#### Description
 * Delete a type of holiday matching a specified ID, and all holidays associated with that type.
 
 
-####Example
+#### Example
 ```
 '/api/v1/types/:id'
 ```
 
-####Return
+#### Return
 ```
 User will not see a return object for a successful PATCH - instead will have a successful 204 response. New changes will be reflected in the database.
 ```
 
 -
 
-###DELETE a Holiday
+### DELETE a Holiday
 
 ```
 DELETE holidays
 
 ```
 
-####Authentication:
+#### Authentication:
 * JWT is required to be passed in either Header or a Query Param ('/api/v1/holidays/?token=USER_JWT').
 
-####Description
+#### Description
 * Delete a holiday matching a specified ID.
 
 
-####Example
+#### Example
 ```
 '/api/v1/holiday/:id'
 ```
 
-####Return
+#### Return
 ```
 User will not see a return object for a successful PATCH - instead will have a successful 204 response. New changes will be reflected in the database.
 ```
