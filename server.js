@@ -84,6 +84,74 @@ app.get('/api/v1/types', (request, response) => {
     });
 });
 
+app.get('/api/v1/types/:id/holidays', (request, response) => {
+  const { id } = request.params;
+
+  database('holidays').where({ type_id: id }).select()
+    .then(holidays => {
+      response.status(200).json(holidays);
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
+});
+
+app.post('/api/v1/types', checkAuth, (request, response) => {
+  const type = request.body;
+  delete type.token;
+
+  for (let requiredParameter of ['type']) {
+    if(!type[requiredParameter]) {
+      return response
+        .status(422)
+        .send({ error: `Expected format: { type: <String> }. You're missing a "${requiredParameter}" property.` });
+    }
+  }
+
+  database('types').select().insert(type, '*')
+    .then(results => {
+      response.status(201).json(results);
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
+});
+
+app.patch('/api/v1/types/:id', checkAuth, (request, response) => {
+  const typePatch = request.body;
+  delete typePatch.token;
+
+  const { id } = request.params;
+
+  database('types').where('id', id)
+    .update(typePatch, '*')
+    .then(results => {
+      if (!results.length) {
+        return response.status(404).json({ error: `Cannot find a type with the id of ${id}` });
+      }
+      response.sendStatus(204);
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
+});
+
+app.delete('/api/v1/types/:id', checkAuth, (request, response) => {
+  const { id } = request.params;
+
+  database('types').where({ id }).del()
+    .then(type => {
+      if (type) {
+        response.sendStatus(204);
+      } else {
+        response.status(422).json({ error: 'Not Found' });
+      }
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
+});
+
 app.get('/api/v1/holidays', (request, response) => {
   let { month, fullDate } = request.query;
 
@@ -113,39 +181,6 @@ app.get('/api/v1/holidays/:id', (request, response) => {
   database('holidays').where({ id }).select()
     .then(holidays => {
       response.status(200).json(holidays);
-    })
-    .catch(error => {
-      response.status(500).json({ error });
-    });
-});
-
-app.get('/api/v1/types/:id/holidays', (request, response) => {
-  const { id } = request.params;
-
-  database('holidays').where({ type_id: id }).select()
-    .then(holidays => {
-      response.status(200).json(holidays);
-    })
-    .catch(error => {
-      response.status(500).json({ error });
-    });
-});
-
-app.post('/api/v1/types', checkAuth, (request, response) => {
-  const type = request.body;
-  delete type.token;
-
-  for (let requiredParameter of ['type']) {
-    if(!type[requiredParameter]) {
-      return response
-        .status(422)
-        .send({ error: `Expected format: { type: <String> }. You're missing a "${requiredParameter}" property.` });
-    }
-  }
-
-  database('types').select().insert(type, '*')
-    .then(results => {
-      response.status(201).json(results);
     })
     .catch(error => {
       response.status(500).json({ error });
@@ -192,25 +227,6 @@ app.patch('/api/v1/holidays/:id', checkAuth, (request, response) => {
     });
 });
 
-app.patch('/api/v1/types/:id', checkAuth, (request, response) => {
-  const typePatch = request.body;
-  delete typePatch.token;
-
-  const { id } = request.params;
-
-  database('types').where('id', id)
-    .update(typePatch, '*')
-    .then(results => {
-      if (!results.length) {
-        return response.status(404).json({ error: `Cannot find a type with the id of ${id}` });
-      }
-      response.sendStatus(204);
-    })
-    .catch(error => {
-      response.status(500).json({ error });
-    });
-});
-
 app.delete('/api/v1/holidays/:id', checkAuth, (request, response) => {
   const { id } = request.params;
 
@@ -227,21 +243,6 @@ app.delete('/api/v1/holidays/:id', checkAuth, (request, response) => {
     });
 });
 
-app.delete('/api/v1/types/:id', checkAuth, (request, response) => {
-  const { id } = request.params;
-
-  database('types').where({ id }).del()
-    .then(type => {
-      if (type) {
-        response.sendStatus(204);
-      } else {
-        response.status(422).json({ error: 'Not Found' });
-      }
-    })
-    .catch(error => {
-      response.status(500).json({ error });
-    });
-});
 
 
 app.listen(app.get('port'), () => {
